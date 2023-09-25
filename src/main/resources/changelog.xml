@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+		xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+	<changeSet id="1" author="Liquibase">
+		<createTable tableName="test_table">
+			<column name="test_id" type="int">
+				<constraints primaryKey="true"/>
+			</column>
+			<column name="test_column" type="varchar"/>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="2.works" author="test">
+		<sql dbms="postgresql">
+			SELECT * FROM test_table;
+		</sql>
+	</changeSet>
+
+	<changeSet id="2.broken.a" author="test">
+		<sql dbms="!postgresql">
+			SELECT * FROM test_table;
+		</sql>
+	</changeSet>
+
+	<changeSet id="2.broken.b" author="test">
+		<sql dbms="!mssql,!postgresql">
+			SELECT * FROM test_table;
+		</sql>
+	</changeSet>
+
+	<changeSet id="3.broken" author="test" dbms="mssql,postgresql">
+		<sql dbms="mssql">
+			SELECT * FROM test_table;
+		</sql>
+		<sql dbms="postgresql">
+			SELECT * FROM test_table;
+		</sql>
+	</changeSet>
+
+	<changeSet id="4.broken" author="test">
+		<sql dbms="mssql">
+			SELECT * FROM test_table;
+		</sql>
+	</changeSet>
+</databaseChangeLog>
